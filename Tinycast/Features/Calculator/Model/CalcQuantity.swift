@@ -23,12 +23,13 @@ enum CalcQuantity {
                 return CalcResult(
                     expression: query,
                     payload: .error(
-                        message: "Exchange rates unavailable — check your connection."))
+                        message: String(
+                            localized: "Exchange rates unavailable — check your connection.")))
             }
             if let code = parser.currencyCodes.first(where: { rates.rate(for: $0) == nil }) {
                 return CalcResult(
                     expression: query,
-                    payload: .error(message: "No exchange rate for \(code)."))
+                    payload: .error(message: String(localized: "No exchange rate for \(code).")))
             }
         }
 
@@ -43,7 +44,8 @@ enum CalcQuantity {
             guard parser.operationCount > 0 else { return nil }
             return CalcResult(
                 expression: expressionText(split.expressionTokens),
-                sourceBadge: "Expression", targetBadge: "Result",
+                sourceBadge: String(localized: "Expression"),
+                targetBadge: String(localized: "Result"),
                 payload: .value(
                     display: CalcFormatter.display(value.effective),
                     copyText: CalcFormatter.copyText(value.effective)))
@@ -113,17 +115,21 @@ enum CalcQuantity {
                     return CalcResult(
                         expression: query,
                         payload: .error(
-                            message: "Exchange rates unavailable — check your connection."))
+                            message: String(
+                                localized:
+                                    "Exchange rates unavailable — check your connection.")))
                 }
                 guard rates.rate(for: from.code) != nil else {
                     return CalcResult(
                         expression: query,
-                        payload: .error(message: "No exchange rate for \(from.code)."))
+                        payload: .error(
+                            message: String(localized: "No exchange rate for \(from.code).")))
                 }
                 guard rates.rate(for: to.code) != nil else {
                     return CalcResult(
                         expression: query,
-                        payload: .error(message: "No exchange rate for \(to.code)."))
+                        payload: .error(
+                            message: String(localized: "No exchange rate for \(to.code).")))
                 }
                 guard let output = rates.convert(value.amount, from: from.code, to: to.code)
                 else { return nil }
@@ -142,7 +148,7 @@ enum CalcQuantity {
     ) -> CalcResult {
         CalcResult(
             expression: expression,
-            sourceBadge: "Expression", targetBadge: unit.name,
+            sourceBadge: String(localized: "Expression"), targetBadge: unit.name,
             payload: .value(
                 display: "\(CalcFormatter.display(amount)) \(unit.symbol)",
                 copyText: "\(CalcFormatter.copyText(amount)) \(unit.symbol)"))
@@ -150,7 +156,7 @@ enum CalcQuantity {
 
     private static func currencyResult(
         _ amount: Double, definition: CurrencyDef, expression: String,
-        sourceBadge: String = "Expression"
+        sourceBadge: String = String(localized: "Expression")
     ) -> CalcResult {
         let formatted = CalcFormatter.currency(amount)
         return CalcResult(
@@ -164,7 +170,7 @@ enum CalcQuantity {
     private static func conversionError(_ query: String, from: String, to: String) -> CalcResult {
         CalcResult(
             expression: query,
-            payload: .error(message: "Cannot convert \(from) to \(to)."))
+            payload: .error(message: String(localized: "Cannot convert \(from) to \(to).")))
     }
 
     fileprivate static func convertUnit(_ amount: Double, from: UnitDef, to: UnitDef) -> Double {
@@ -401,12 +407,17 @@ private struct QuantityParser {
                 amount: left.effective + direction * right.effective, kind: .scalar)
         case (.unit(let lhs), .unit(let rhs)):
             guard lhs.category == rhs.category else {
+                let operation =
+                    op == "+" ? String(localized: "add") : String(localized: "subtract")
                 return fail(
-                    "Cannot \(op == "+" ? "add" : "subtract") \(lhs.category.displayName) and \(rhs.category.displayName)."
+                    String(
+                        localized:
+                            "Cannot \(operation) \(lhs.category.displayName) and \(rhs.category.displayName).")
                 )
             }
             if lhs.category == .temperature, lhs.symbol != rhs.symbol {
-                return fail("Cannot combine temperatures with different units.")
+                return fail(
+                    String(localized: "Cannot combine temperatures with different units."))
             }
             // Composite ("5 feet 3 inches") answers in its leading unit; `+`/`-` in the last.
             if implicit {
@@ -429,12 +440,20 @@ private struct QuantityParser {
             return QuantityValue(
                 amount: converted + direction * right.amount, kind: .currency(rhs))
         case (.unit(let lhs), .currency):
+            let operation =
+                op == "+" ? String(localized: "add") : String(localized: "subtract")
             return fail(
-                "Cannot \(op == "+" ? "add" : "subtract") \(lhs.category.displayName) and Currency."
+                String(
+                    localized:
+                        "Cannot \(operation) \(lhs.category.displayName) and \(CalcCurrency.categoryName).")
             )
         case (.currency, .unit(let rhs)):
+            let operation =
+                op == "+" ? String(localized: "add") : String(localized: "subtract")
             return fail(
-                "Cannot \(op == "+" ? "add" : "subtract") Currency and \(rhs.category.displayName)."
+                String(
+                    localized:
+                        "Cannot \(operation) \(CalcCurrency.categoryName) and \(rhs.category.displayName).")
             )
         // A bare number takes the unit beside it; adjacency stays silent, being a half-typed unit.
         case (.unit, .scalar), (.currency, .scalar):
@@ -461,7 +480,7 @@ private struct QuantityParser {
             return QuantityValue(
                 amount: left.effective * right.effective, kind: left.kind)
         default:
-            return fail("Multiplication of two unit values is not supported.")
+            return fail(String(localized: "Multiplication of two unit values is not supported."))
         }
     }
 
@@ -474,14 +493,16 @@ private struct QuantityParser {
         case (.unit, .scalar), (.currency, .scalar):
             return finiteDivision(left.effective, right.effective, kind: left.kind)
         case (.scalar, .unit), (.scalar, .currency):
-            return fail("Division by a unit value is not supported.")
+            return fail(String(localized: "Division by a unit value is not supported."))
         case (.unit(let lhs), .unit(let rhs)):
             guard lhs.category == rhs.category else {
                 return fail(
-                    "Cannot divide \(lhs.category.displayName) by \(rhs.category.displayName).")
+                    String(
+                        localized:
+                            "Cannot divide \(lhs.category.displayName) by \(rhs.category.displayName)."))
             }
             guard lhs.category != .temperature else {
-                return fail("Division of temperature values is not supported.")
+                return fail(String(localized: "Division of temperature values is not supported."))
             }
             let numerator = left.amount * lhs.factor
             let denominator = right.amount * rhs.factor
@@ -491,9 +512,15 @@ private struct QuantityParser {
             else { return nil }
             return finiteDivision(left.amount, denominator, kind: .scalar)
         case (.unit(let lhs), .currency):
-            return fail("Cannot divide \(lhs.category.displayName) by Currency.")
+            return fail(
+                String(
+                    localized:
+                        "Cannot divide \(lhs.category.displayName) by \(CalcCurrency.categoryName)."))
         case (.currency, .unit(let rhs)):
-            return fail("Cannot divide Currency by \(rhs.category.displayName).")
+            return fail(
+                String(
+                    localized:
+                        "Cannot divide \(CalcCurrency.categoryName) by \(rhs.category.displayName)."))
         }
     }
 
@@ -583,15 +610,15 @@ private struct QuantityParser {
         recordCurrency(from.code)
         recordCurrency(to.code)
         guard let rates else {
-            issue = "Exchange rates unavailable — check your connection."
+            issue = String(localized: "Exchange rates unavailable — check your connection.")
             return nil
         }
         guard rates.rate(for: from.code) != nil else {
-            issue = "No exchange rate for \(from.code)."
+            issue = String(localized: "No exchange rate for \(from.code).")
             return nil
         }
         guard rates.rate(for: to.code) != nil else {
-            issue = "No exchange rate for \(to.code)."
+            issue = String(localized: "No exchange rate for \(to.code).")
             return nil
         }
         return rates.convert(amount, from: from.code, to: to.code)

@@ -22,9 +22,10 @@ struct BackupSettingsView: View {
 
     private var raycastFileSubtitle: String {
         guard let name = raycastFile?.lastPathComponent else {
-            return "Choose a .rayconfig file exported from Raycast."
+            return String(localized: "Choose a .rayconfig file exported from Raycast.")
         }
-        return "\(name) — \(format?.title ?? "not a Raycast export")"
+        let formatTitle = format?.title ?? String(localized: "not a Raycast export")
+        return String(localized: "\(name) — \(formatTitle)")
     }
 
     var body: some View {
@@ -136,20 +137,28 @@ struct BackupSettingsView: View {
                 var parts: [String] = []
                 if let applied = BackupActions.appliedText(outcome.summary) { parts.append(applied) }
                 if outcome.clipboardImported > 0 {
-                    parts.append("Imported \(outcome.clipboardImported) clipboard entries.")
+                    parts.append(
+                        String(
+                            localized:
+                                "Imported \(outcome.clipboardImported) clipboard entries."))
                 }
                 if outcome.snippetsImported > 0 {
-                    let noun = outcome.snippetsImported == 1 ? "snippet" : "snippets"
-                    parts.append("Imported \(outcome.snippetsImported) \(noun).")
+                    if outcome.snippetsImported == 1 {
+                        parts.append(String(localized: "Imported 1 snippet."))
+                    } else {
+                        parts.append(
+                            String(localized: "Imported \(outcome.snippetsImported) snippets."))
+                    }
                 }
                 if let snippetsError = outcome.snippetsError {
-                    parts.append("Couldn’t import snippets: \(snippetsError)")
+                    parts.append(String(localized: "Couldn’t import snippets: \(snippetsError)"))
                 }
                 var message =
                     parts.isEmpty
                     ? BackupActions.nothingImportedText : parts.joined(separator: " ")
                 if outcome.missingImages > 0 {
-                    message += " \(outcome.missingImages) images were unavailable and skipped."
+                    message += String(
+                        localized: " \(outcome.missingImages) images were unavailable and skipped.")
                 }
                 status = .success(message)
                 passphrase = ""

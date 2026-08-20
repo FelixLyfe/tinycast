@@ -18,7 +18,9 @@ enum PopToRootTimeout: Int, CaseIterable, Identifiable, Sendable {
     var id: Int { rawValue }
 
     var title: String {
-        self == .immediately ? "Immediately" : "After \(rawValue) seconds"
+        self == .immediately
+            ? String(localized: "Immediately")
+            : String(localized: "After \(rawValue) seconds")
     }
 
     var interval: TimeInterval { TimeInterval(rawValue) }
@@ -79,6 +81,14 @@ final class AppSettings {
     /// Follow macOS, or pin Tinycast to one appearance. Applied by `AppCore.applyAppearance()`.
     var appearance: AppAppearance {
         didSet { defaults.set(appearance.rawValue, forKey: Key.appearance.rawValue) }
+    }
+
+    /// Tinycast's interface language. The bundle reads AppleLanguages on the next launch.
+    var appLanguage: AppLanguage {
+        didSet {
+            defaults.set(appLanguage.rawValue, forKey: Key.appLanguage.rawValue)
+            appLanguage.prepareForNextLaunch(in: defaults)
+        }
     }
 
     /// Summon the launcher as a slim search bar that expands into the full list on typing.
@@ -293,6 +303,7 @@ final class AppSettings {
             ?? .immediately
         appearance =
             defaults.string(forKey: Key.appearance.rawValue).flatMap(AppAppearance.init) ?? .system
+        appLanguage = AppLanguage.saved(in: defaults)
         compactMode = defaults.bool(forKey: Key.compactMode.rawValue)
         // Defaults to true, so absence must be distinguished from a stored `false`.
         showFavoritesInCompactMode =

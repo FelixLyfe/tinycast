@@ -91,8 +91,10 @@ final class CustomCommandCoordinator {
                     // Neutral, not destructive: their own command just wants a second tap.
                     await core.confirm(
                         title: command.name,
-                        message: "Are you sure you want to run this command?\n\n\(command.command)",
-                        symbol: CustomCommand.sfSymbol, confirmTitle: "Run",
+                        message: String(
+                            localized:
+                                "Are you sure you want to run this command?\n\n\(command.command)"),
+                        symbol: CustomCommand.sfSymbol, confirmTitle: String(localized: "Run"),
                         tone: .neutral, confirmRole: .standard)
                 else { return }
             }
@@ -101,7 +103,7 @@ final class CustomCommandCoordinator {
             guard outcome != .success else {
                 // On finish, not start, so a slow command confirms late rather than early.
                 if command.showsConfirmation {
-                    core.showMessage("Ran \(command.name)")
+                    core.showMessage(String(localized: "Ran \(command.name)"))
                 }
                 return
             }
@@ -133,21 +135,24 @@ final class CustomCommandCoordinator {
         case .success:
             return
         case .launchFailure(let detail):
-            message = "The shell could not be started.\n\n\(detail)"
+            message = String(localized: "The shell could not be started.\n\n\(detail)")
         case .nonZeroExit(let status, let stderr):
             suggestsShellEnvironment = status == 127 && !command.loadsShellEnvironment
             message =
-                "The command exited with status \(status)."
+                String(localized: "The command exited with status \(status).")
                 + (stderr.map { "\n\n" + $0 } ?? "")
                 + (suggestsShellEnvironment
-                    ? "\n\nIf this is a shell alias or function, turn on Load Shell Environment for "
-                        + "this command." : "")
+                    ? "\n\n"
+                        + String(
+                            localized:
+                                "If this is a shell alias or function, turn on Load Shell Environment for this command.")
+                    : "")
         }
         guard
             await core.reportFailure(
-                title: "“\(command.name)” Failed", message: message,
+                title: String(localized: "“\(command.name)” Failed"), message: message,
                 symbol: CustomCommand.sfSymbol,
-                recovery: suggestsShellEnvironment ? "Open Settings…" : nil)
+                recovery: suggestsShellEnvironment ? String(localized: "Open Settings…") : nil)
         else { return }
         settingsCoordinator.showSettings(tab: .commands)
     }

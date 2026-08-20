@@ -162,7 +162,8 @@ enum CalcDateTime {
             let sourceBadge = momentString(
                 base.date, hasTime: base.hasTime, now: now, calendar: calendar)
             return CalcResult(
-                expression: echo, sourceBadge: sourceBadge, targetBadge: "Result",
+                expression: echo, sourceBadge: sourceBadge,
+                targetBadge: String(localized: "Result"),
                 payload: .value(display: display, copyText: display))
         }
 
@@ -178,7 +179,8 @@ enum CalcDateTime {
                 [.day], from: calendar.startOfDay(for: other.date),
                 to: calendar.startOfDay(for: base.date)
             ).day ?? 0
-        let word = abs(days) == 1 ? "day" : "days"
+        let word =
+            abs(days) == 1 ? String(localized: "day") : String(localized: "days")
         return CalcResult(
             expression: echo,
             sourceBadge: dateString(base.date, now: now, calendar: calendar),
@@ -368,15 +370,25 @@ enum CalcDateTime {
         guard let last = phrase.split(separator: " ").last.map(String.init) else { return nil }
         switch last {
         case "s", "sec", "secs", "second", "seconds":
-            return DurUnit(seconds: 1, singular: "second", plural: "seconds", kind: .subSecond)
+            return DurUnit(
+                seconds: 1, singular: String(localized: "second"),
+                plural: String(localized: "seconds"), kind: .subSecond)
         case "min", "mins", "minute", "minutes":
-            return DurUnit(seconds: 60, singular: "minute", plural: "minutes", kind: .subSecond)
+            return DurUnit(
+                seconds: 60, singular: String(localized: "minute"),
+                plural: String(localized: "minutes"), kind: .subSecond)
         case "h", "hr", "hrs", "hour", "hours":
-            return DurUnit(seconds: 3600, singular: "hour", plural: "hours", kind: .subSecond)
+            return DurUnit(
+                seconds: 3600, singular: String(localized: "hour"),
+                plural: String(localized: "hours"), kind: .subSecond)
         case "d", "day", "days":
-            return DurUnit(seconds: 86400, singular: "day", plural: "days", kind: .day)
+            return DurUnit(
+                seconds: 86400, singular: String(localized: "day"),
+                plural: String(localized: "days"), kind: .day)
         case "wk", "week", "weeks":
-            return DurUnit(seconds: 604800, singular: "week", plural: "weeks", kind: .week)
+            return DurUnit(
+                seconds: 604800, singular: String(localized: "week"),
+                plural: String(localized: "weeks"), kind: .week)
         default:
             return nil
         }
@@ -417,7 +429,8 @@ enum CalcDateTime {
         -> String
     {
         let day = dateString(date, now: now, calendar: calendar)
-        return hasTime ? "\(day) at \(timeString(date, calendar: calendar))" : day
+        return hasTime
+            ? String(localized: "\(day) at \(timeString(date, calendar: calendar))") : day
     }
 
     private static func dateString(_ date: Date, now: Date, calendar: Calendar) -> String {

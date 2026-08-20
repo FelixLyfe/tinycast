@@ -15,12 +15,12 @@ enum SnippetArgumentsPrompt {
         NSApp.activate(ignoringOtherApps: true)
 
         let alert = NSAlert()
-        alert.messageText = "Snippet: \(snippetName)"
-        alert.informativeText = "Fill in the template fields:"
+        alert.messageText = String(localized: "Snippet: \(snippetName)")
+        alert.informativeText = String(localized: "Fill in the template fields:")
         alert.alertStyle = .informational
         // AppKit gives ↵ to the first button and Esc to the one titled "Cancel".
-        alert.addButton(withTitle: "Expand")
-        alert.addButton(withTitle: "Cancel")
+        alert.addButton(withTitle: String(localized: "Expand"))
+        alert.addButton(withTitle: String(localized: "Cancel"))
 
         let form = NSHostingView(rootView: SnippetArgumentsForm(values: values))
         form.frame = NSRect(
@@ -83,7 +83,7 @@ private struct SnippetArgumentsForm: View {
                     }
                 }
                 .accessibilityElement(children: .contain)
-                .accessibilityLabel("Snippet argument \(argument.name)")
+                .accessibilityLabel(String(localized: "Snippet argument \(argument.name)"))
             }
         }
         .frame(width: Theme.Size.argumentPromptWidth, alignment: .leading)

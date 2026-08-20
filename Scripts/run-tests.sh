@@ -150,6 +150,7 @@ run raycast-test           Tinycast/Features/Backup/Model/RaycastFormat.swift \
                            Tinycast/Features/Clipboard/Model/ClipboardStore.swift \
                            Tinycast/Features/Clipboard/Model/ClipboardFilter.swift
 run settings-backup-test   Tinycast/Features/Settings/AppSettingsKey.swift \
+                           Tinycast/Features/Settings/AppLanguage.swift \
                            Tinycast/Features/Backup/Model/SettingsBackupCoverage.swift
 E=Tinycast/Features/Extensions
 run symbols-test           $E/Service/SymbolCatalog.swift

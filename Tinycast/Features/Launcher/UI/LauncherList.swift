@@ -82,7 +82,7 @@ struct LauncherList: View {
         let rows = rows
         return Group {
             if results.isEmpty && calc == nil {
-                EmptyResults(text: "No apps found")
+                EmptyResults(text: String(localized: "No apps found"))
             } else {
                 ScrollViewReader { proxy in
                     ScrollView {

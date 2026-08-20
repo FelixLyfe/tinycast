@@ -111,9 +111,10 @@ enum CalcActionsMenu {
         PopoverMenuContent(
             header: result.expression,
             items: [
-                PopoverMenuItem(title: "Copy Answer", systemImage: "doc.on.doc", shortcut: "↵") {
-                    core.calculatorCoordinator.copyCalculatorResult(result)
-                }
+                PopoverMenuItem(
+                    title: String(localized: "Copy Answer"), systemImage: "doc.on.doc",
+                    shortcut: "↵"
+                ) { core.calculatorCoordinator.copyCalculatorResult(result) }
             ]
         )
     }

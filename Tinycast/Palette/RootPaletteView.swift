@@ -115,10 +115,14 @@ struct RootPaletteView: View {
     /// The bottom-left app menu content (About / Settings).
     private var appMenuContent: PopoverMenuContent {
         PopoverMenuContent(items: [
-            PopoverMenuItem(title: "About Tinycast", systemImage: "info.circle") {
+            PopoverMenuItem(
+                title: String(localized: "About Tinycast"), systemImage: "info.circle"
+            ) {
                 core.settingsCoordinator.showAbout()
             },
-            PopoverMenuItem(title: "Settings", systemImage: "gearshape", shortcut: "⌘,") {
+            PopoverMenuItem(
+                title: String(localized: "Settings"), systemImage: "gearshape", shortcut: "⌘,"
+            ) {
                 core.settingsCoordinator.showSettings()
             }
         ])
@@ -856,7 +860,7 @@ private struct CompactFavoritesRow: View {
                 }
             }
             if showsOverflow {
-                CompactFavoriteButton(help: "Show all  ↓", action: onOverflow) {
+                CompactFavoriteButton(help: String(localized: "Show all  ↓"), action: onOverflow) {
                     Image(systemName: "ellipsis")
                         .font(.system(size: 10))
                         .foregroundStyle(Theme.Colors.textSecondary)

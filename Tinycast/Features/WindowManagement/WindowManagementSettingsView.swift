@@ -7,11 +7,14 @@ struct WindowManagementSettingsView: View {
         @Bindable var settings = settings
         return Form {
             FeatureSwitchSection(
-                header: "Window Management",
-                enableTitle: "Enable window management",
+                header: String(localized: "Window Management"),
+                enableTitle: String(localized: "Enable window management"),
                 enableSubtitle:
-                    "Moves the window you were last in, using the Accessibility permission Tinycast already uses to paste.",
-                launcherSubtitle: "Find the window commands in launcher search.",
+                    String(
+                        localized:
+                            "Moves the window you were last in, using the Accessibility permission Tinycast already uses to paste."),
+                launcherSubtitle: String(
+                    localized: "Find the window commands in launcher search."),
                 isEnabled: $settings.windowManagementEnabled,
                 showsInLauncher: $settings.windowManagementShowInLauncher)
 
@@ -79,8 +82,8 @@ private struct WindowCommandSettingsRow: View {
             Toggle("", isOn: visibilityBinding)
                 .labelsHidden()
                 .toggleStyle(.checkbox)
-                .help("Show in launcher")
-                .accessibilityLabel("Show \(command.name) in launcher")
+                .help(String(localized: "Show in launcher"))
+                .accessibilityLabel(String(localized: "Show \(command.name) in launcher"))
         }
     }
 

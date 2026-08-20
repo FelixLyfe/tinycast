@@ -24,7 +24,11 @@ struct CustomCommandEditorSheet: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: Theme.Spacing.xl) {
-            Text(command == nil ? "Add Custom Command" : "Edit Custom Command")
+            Text(
+                command == nil
+                    ? String(localized: "Add Custom Command")
+                    : String(localized: "Edit Custom Command")
+            )
                 .font(.title2.weight(.bold))
 
             VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
@@ -58,14 +62,16 @@ struct CustomCommandEditorSheet: View {
 
             VStack(alignment: .leading, spacing: Theme.Spacing.lg) {
                 optionToggle(
-                    "Load shell environment", isOn: $loadsShellEnvironment,
-                    detail: "Resolves aliases, functions and PATH. Slower to start.")
+                    String(localized: "Load shell environment"),
+                    isOn: $loadsShellEnvironment,
+                    detail: String(
+                        localized: "Resolves aliases, functions and PATH. Slower to start."))
                 optionToggle(
-                    "Needs confirmation", isOn: $requiresConfirmation,
-                    detail: "Ask before running this command.")
+                    String(localized: "Needs confirmation"), isOn: $requiresConfirmation,
+                    detail: String(localized: "Ask before running this command."))
                 optionToggle(
-                    "Show confirmation", isOn: $showsConfirmation,
-                    detail: "Confirm on screen after the command succeeds.")
+                    String(localized: "Show confirmation"), isOn: $showsConfirmation,
+                    detail: String(localized: "Confirm on screen after the command succeeds."))
             }
 
             if let errorMessage {

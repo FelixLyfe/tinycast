@@ -9,11 +9,15 @@ struct TinycastApp: App {
     // Channel-aware: "Tinycast", "Tinycast Dev", or "Tinycast Beta".
     private let appName = Bundle.main.appDisplayName
 
+    init() {
+        AppLanguage.prepareForLaunch()
+    }
+
     var body: some Scene {
         MenuBarExtra(
             appName, systemImage: "macwindow.on.rectangle", isInserted: $showInMenuBar
         ) {
-            Button("Open \(appName)") {
+            Button(String(localized: "Open \(appName)")) {
                 AppCore.shared.paletteCoordinator.showPalette(mode: .launcher)
             }
             Button("Clipboard History") {
@@ -24,7 +28,7 @@ struct TinycastApp: App {
                 .keyboardShortcut(",")
             Divider()
             // No ⌘Q: the app menu binds it to Close Settings, and two contradictory ⌘Qs is a lie.
-            Button("Quit \(appName)") { NSApp.terminate(nil) }
+            Button(String(localized: "Quit \(appName)")) { NSApp.terminate(nil) }
         }
         .commands { menuBarCommands }
     }
@@ -33,7 +37,9 @@ struct TinycastApp: App {
     @CommandsBuilder
     private var menuBarCommands: some Commands {
         CommandGroup(replacing: .appInfo) {
-            Button("About \(appName)") { AppCore.shared.settingsCoordinator.showAbout() }
+            Button(String(localized: "About \(appName)")) {
+                AppCore.shared.settingsCoordinator.showAbout()
+            }
         }
         CommandGroup(replacing: .appSettings) {
             Button("Settings…") { AppCore.shared.settingsCoordinator.showSettings() }

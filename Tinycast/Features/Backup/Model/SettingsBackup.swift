@@ -25,6 +25,7 @@ struct SettingsBackup: Codable {
         var showInMenuBar: Bool?
         var popToRootSeconds: Int?
         var appearance: String?
+        var appLanguage: String?
         var compactMode: Bool?
         var showFavoritesInCompactMode: Bool?
         var searchScopes: [String]?
@@ -101,6 +102,7 @@ extension SettingsBackup {
                 ?? true,
             popToRootSeconds: s.popToRootTimeout.rawValue,
             appearance: s.appearance.rawValue,
+            appLanguage: s.appLanguage.rawValue,
             compactMode: s.compactMode,
             showFavoritesInCompactMode: s.showFavoritesInCompactMode,
             searchScopes: s.searchScopes,
@@ -240,6 +242,10 @@ extension SettingsBackup {
         }
         if let raw = s.appearance, let appearance = AppAppearance(rawValue: raw) {
             settings.appearance = appearance
+            count += 1
+        }
+        if let raw = s.appLanguage, let language = AppLanguage(rawValue: raw) {
+            settings.appLanguage = language
             count += 1
         }
         if let flag = s.compactMode {

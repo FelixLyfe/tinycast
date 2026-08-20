@@ -8,8 +8,8 @@ struct ApplicationsSettingsView: View {
 
             LauncherItemsSection(
                 kind: .application,
-                header: "Applications",
-                searchPrompt: "Search applications…")
+                header: String(localized: "Applications"),
+                searchPrompt: String(localized: "Search applications…"))
         }
         .formStyle(.grouped)
         .releasesFocusOnOutsideClick()

@@ -189,7 +189,7 @@ final class HotKeyManager {
     private func displayName(of action: HotKeyAction) -> String {
         switch action {
         case .togglePalette:
-            return "App Launcher"
+            return String(localized: "App Launcher")
         case .toggleClipboard:
             return CommandID.clipboardHistory.name
         case .toggleEmoji:
@@ -205,15 +205,15 @@ final class HotKeyManager {
         case .app(let bundleID), .settingsPane(let bundleID):
             return displayName?(action) ?? bundleID
         case .customCommand:
-            return displayName?(action) ?? "Custom Command"
+            return displayName?(action) ?? String(localized: "Custom Command")
         case .systemAction(let id):
             return SystemActionCatalog.action(id: id).name
         case .windowCommand(let id):
-            return WindowCommandCatalog.command(id: id)?.name ?? "Window Command"
+            return WindowCommandCatalog.command(id: id)?.name ?? String(localized: "Window Command")
         case .quicklink:
-            return displayName?(action) ?? "Quicklink"
+            return displayName?(action) ?? String(localized: "Quicklink")
         case .extensionCommand:
-            return displayName?(action) ?? "Extension Command"
+            return displayName?(action) ?? String(localized: "Extension Command")
         }
     }
 

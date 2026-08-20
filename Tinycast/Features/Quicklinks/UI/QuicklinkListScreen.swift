@@ -13,7 +13,7 @@ struct QuicklinkListScreen: PaletteScreen {
         return store.quicklinks.filter { $0.name.localizedCaseInsensitiveContains(query) }
     }
 
-    var primaryActionTitle: String { "Open Quicklink" }
+    var primaryActionTitle: String { String(localized: "Open Quicklink") }
 
     private func quicklink(at selection: Int) -> Quicklink? {
         let rows = rows
@@ -62,7 +62,9 @@ struct QuicklinkListScreen: PaletteScreen {
         let rows = rows
         if rows.isEmpty {
             EmptyResults(
-                text: store.quicklinks.isEmpty ? "No quicklinks yet" : "No matching quicklinks")
+                text: store.quicklinks.isEmpty
+                    ? String(localized: "No quicklinks yet")
+                    : String(localized: "No matching quicklinks"))
         } else {
             QuicklinkList(
                 results: rows,
@@ -86,41 +88,48 @@ struct QuicklinkListScreen: PaletteScreen {
 enum QuicklinkActionsMenu {
     static func content(quicklink: Quicklink, core: AppCore) -> PopoverMenuContent {
         var items: [PopoverMenuItem] = [
-            PopoverMenuItem(title: "Open Quicklink", systemImage: symbol(quicklink), shortcut: "↵") {
-                core.quicklinkCoordinator.openQuicklink(id: quicklink.id)
-            }
+            PopoverMenuItem(
+                title: String(localized: "Open Quicklink"), systemImage: symbol(quicklink),
+                shortcut: "↵"
+            ) { core.quicklinkCoordinator.openQuicklink(id: quicklink.id) }
         ]
         // A flat menu has no picker, so the palette offers only the system-handler bypass.
         if quicklink.openWithBundleID != nil {
             items.append(
                 PopoverMenuItem(
-                    title: "Open With Default App", systemImage: "arrow.up.forward.app",
+                    title: String(localized: "Open With Default App"),
+                    systemImage: "arrow.up.forward.app",
                     shortcut: "⌘↵"
                 ) {
                     core.quicklinkCoordinator.openQuicklink(id: quicklink.id, forcingDefaultApp: true)
                 })
         }
         items.append(
-            PopoverMenuItem(title: "Edit Quicklink", systemImage: "pencil") {
+            PopoverMenuItem(title: String(localized: "Edit Quicklink"), systemImage: "pencil") {
                 core.paletteCoordinator.hidePalette(restoreFocus: false)
                 core.quicklinkCoordinator.editQuicklink(quicklink)
             })
         items.append(
-            PopoverMenuItem(title: "Duplicate Quicklink", systemImage: "plus.square.on.square") {
+            PopoverMenuItem(
+                title: String(localized: "Duplicate Quicklink"),
+                systemImage: "plus.square.on.square"
+            ) {
                 core.quicklinkCoordinator.duplicateQuicklink(id: quicklink.id)
             })
         items.append(
             quicklink.isPinned
-                ? PopoverMenuItem(title: "Unpin Quicklink", systemImage: "pin.slash", shortcut: "⌘.") {
-                    core.quicklinkCoordinator.toggleQuicklinkPinned(id: quicklink.id)
-                }
-                : PopoverMenuItem(title: "Pin Quicklink", systemImage: "pin", shortcut: "⌘.") {
-                    core.quicklinkCoordinator.toggleQuicklinkPinned(id: quicklink.id)
-                })
+                ? PopoverMenuItem(
+                    title: String(localized: "Unpin Quicklink"), systemImage: "pin.slash",
+                    shortcut: "⌘."
+                ) { core.quicklinkCoordinator.toggleQuicklinkPinned(id: quicklink.id) }
+                : PopoverMenuItem(
+                    title: String(localized: "Pin Quicklink"), systemImage: "pin", shortcut: "⌘."
+                ) { core.quicklinkCoordinator.toggleQuicklinkPinned(id: quicklink.id) })
         items.append(
             PopoverMenuItem(
                 title: quicklink.showsInRootSearch
-                    ? "Hide from Root Search" : "Show in Root Search",
+                    ? String(localized: "Hide from Root Search")
+                    : String(localized: "Show in Root Search"),
                 systemImage: quicklink.showsInRootSearch ? "eye.slash" : "eye"
             ) {
                 core.quicklinkCoordinator.setQuicklinkShowsInRootSearch(
@@ -131,14 +140,17 @@ enum QuicklinkActionsMenu {
             !QuicklinkDestination.containsPlaceholder(quicklink.link)
         {
             items.append(
-                PopoverMenuItem(title: "Show in Finder", systemImage: "folder", shortcut: "⌘F") {
+                PopoverMenuItem(
+                    title: String(localized: "Show in Finder"), systemImage: "folder",
+                    shortcut: "⌘F"
+                ) {
                     core.paletteCoordinator.hidePalette(restoreFocus: false)
                     AppLauncher.showInFinder(URL(fileURLWithPath: path))
                 })
         }
         items.append(
             PopoverMenuItem(
-                title: "Delete Quicklink", systemImage: "trash", shortcut: "⌘⌫",
+                title: String(localized: "Delete Quicklink"), systemImage: "trash", shortcut: "⌘⌫",
                 isDestructive: true
             ) {
                 Task { await core.quicklinkCoordinator.deleteQuicklink(id: quicklink.id) }

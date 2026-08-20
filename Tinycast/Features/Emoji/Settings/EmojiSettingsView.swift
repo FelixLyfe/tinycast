@@ -7,7 +7,7 @@ struct EmojiSettingsView: View {
         @Bindable var settings = settings
         return Form {
             Section {
-                SettingsRow(title: "Emoji & Symbols") {
+                SettingsRow(title: String(localized: "Emoji & Symbols")) {
                     ShortcutRecorder(action: .toggleEmoji)
                 }
             } header: {

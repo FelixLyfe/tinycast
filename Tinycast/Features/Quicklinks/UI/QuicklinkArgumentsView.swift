@@ -58,7 +58,7 @@ struct QuicklinkArgumentsView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(spacing: 0) {
-                    SectionHeader(title: "Choices", isFirst: true)
+                    SectionHeader(title: String(localized: "Choices"), isFirst: true)
                     ForEach(Array(options.enumerated()), id: \.offset) { index, option in
                         OptionRow(title: option, selected: index == selection)
                             .id(String(index))

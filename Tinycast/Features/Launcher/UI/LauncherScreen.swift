@@ -73,9 +73,9 @@ struct LauncherScreen: PaletteScreen {
 
     var primaryActionTitle: String {
         switch row(at: clampedSelection) {
-        case .calc: return "Copy Answer"
+        case .calc: return String(localized: "Copy Answer")
         case .entry(let app): return app.kind.descriptor.openVerb
-        case nil: return "Open Application"
+        case nil: return String(localized: "Open Application")
         }
     }
 

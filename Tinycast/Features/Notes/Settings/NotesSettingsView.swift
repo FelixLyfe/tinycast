@@ -41,7 +41,8 @@ private struct NotesCommandsSection: View {
                     Toggle("", isOn: visibilityBinding(entry))
                         .labelsHidden()
                         .toggleStyle(.checkbox)
-                        .accessibilityLabel("Show \(entry.name) in launcher")
+                        .accessibilityLabel(
+                            String(localized: "Show \(entry.name) in launcher"))
                 }
             }
         } header: {

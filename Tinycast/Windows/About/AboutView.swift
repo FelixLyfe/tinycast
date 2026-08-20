@@ -5,7 +5,7 @@ struct AboutView: View {
     private static var version: String {
         let short = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "—"
         let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "—"
-        return "Version \(short) (\(build))"
+        return String(localized: "Version \(short) (\(build))")
     }
 
     // Cached, and read from the bundle: the app icon is generic until LaunchServices registers.
@@ -87,10 +87,10 @@ struct AboutView: View {
                     .foregroundStyle(Theme.Colors.brand)
                 VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
                     Text("Buy Me Brave Origin")
-                    Text(
-                        "If you enjoy my work and would like to support me or buy me Brave Origin,"
-                            + " feel free to reach out on Discord, X, or via email."
-                    )
+                    Text(String(
+                        localized:
+                            "If you enjoy my work and would like to support me or buy me Brave Origin, feel free to reach out on Discord, X, or via email."
+                    ))
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -122,7 +122,7 @@ private struct AboutLink: Identifiable {
 
     static let all: [AboutLink] = [
         AboutLink(
-            id: "website", glyph: .symbol("globe"), title: "Website",
+            id: "website", glyph: .symbol("globe"), title: String(localized: "Website"),
             detail: "abue-ammar.github.io/tinycast",
             url: URL(string: "https://abue-ammar.github.io/tinycast/")!),
         AboutLink(
@@ -131,13 +131,13 @@ private struct AboutLink: Identifiable {
             url: URL(string: "https://github.com/abue-ammar/tinycast")!),
         AboutLink(
             id: "discord", glyph: .brand("BrandDiscord"), title: "Discord",
-            detail: "Join the Tinycast community",
+            detail: String(localized: "Join the Tinycast community"),
             url: URL(string: "https://discord.gg/v2Eeb4QQy3")!),
         AboutLink(
             id: "x", glyph: .brand("BrandX"), title: "X", detail: "@abue_ammar",
             url: URL(string: "https://x.com/abue_ammar")!),
         AboutLink(
-            id: "email", glyph: .symbol("envelope"), title: "Email",
+            id: "email", glyph: .symbol("envelope"), title: String(localized: "Email"),
             detail: "iabueammar@gmail.com", url: URL(string: "mailto:iabueammar@gmail.com")!)
     ]
 }

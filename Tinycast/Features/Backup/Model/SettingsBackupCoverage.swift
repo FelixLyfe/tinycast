@@ -12,6 +12,7 @@ enum SettingsBackupCoverage {
         "emojiSkinTone": .emojiSkinTone,
         "popToRootSeconds": .popToRootTimeout,
         "appearance": .appearance,
+        "appLanguage": .appLanguage,
         "compactMode": .compactMode,
         "showFavoritesInCompactMode": .showFavoritesInCompactMode,
         "searchScopes": .searchScopes,

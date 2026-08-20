@@ -13,15 +13,17 @@ struct CommandsSettingsView: View {
         return Form {
             LauncherItemsSection(
                 kind: .command,
-                header: "Commands",
-                searchPrompt: "Search commands…")
+                header: String(localized: "Commands"),
+                searchPrompt: String(localized: "Search commands…"))
 
             FeatureSwitchSection(
-                header: "Custom Commands",
-                enableTitle: "Enable custom commands",
+                header: String(localized: "Custom Commands"),
+                enableTitle: String(localized: "Enable custom commands"),
                 enableSubtitle:
-                    "Commands run with your user account in /bin/zsh, so use full executable paths.",
-                launcherSubtitle: "Find your commands in launcher search.",
+                    String(
+                        localized:
+                            "Commands run with your user account in /bin/zsh, so use full executable paths."),
+                launcherSubtitle: String(localized: "Find your commands in launcher search."),
                 isEnabled: $settings.customCommandsEnabled,
                 showsInLauncher: $settings.customCommandsShowInLauncher)
 
@@ -88,16 +90,16 @@ private struct CustomCommandSettingsRow: View {
                 Image(systemName: "pencil")
             }
             .buttonStyle(.plain)
-            .help("Edit Command")
-            .accessibilityLabel("Edit \(command.name)")
+            .help(String(localized: "Edit Command"))
+            .accessibilityLabel(String(localized: "Edit \(command.name)"))
 
             Button(action: onDelete) {
                 Image(systemName: "trash")
                     .foregroundStyle(.red)
             }
             .buttonStyle(.plain)
-            .help("Delete Command")
-            .accessibilityLabel("Delete \(command.name)")
+            .help(String(localized: "Delete Command"))
+            .accessibilityLabel(String(localized: "Delete \(command.name)"))
         }
     }
 }

@@ -10,7 +10,7 @@ struct ClipboardScreen: PaletteScreen {
 
     var rows: [ClipboardItem] { store.search(vm.query, filter: vm.clipboardFilter) }
 
-    var primaryActionTitle: String { vm.pasteTarget?.pasteTitle ?? "Paste" }
+    var primaryActionTitle: String { vm.pasteTarget?.pasteTitle ?? String(localized: "Paste") }
 
     private func item(at selection: Int) -> ClipboardItem? {
         let rows = rows
@@ -128,16 +128,20 @@ enum ClipboardActionsMenu {
     ) -> PopoverMenuContent {
         var items: [PopoverMenuItem] = [
             PopoverMenuItem(
-                title: target?.pasteTitle ?? "Paste",
+                title: target?.pasteTitle ?? String(localized: "Paste"),
                 icon: .paste(target, fallback: "doc.on.clipboard"), shortcut: "↵"
             ) {
                 core.clipboardCoordinator.paste(item)
             },
-            PopoverMenuItem(title: "Copy to Clipboard", systemImage: "doc.on.doc", shortcut: "⌘↵") {
+            PopoverMenuItem(
+                title: String(localized: "Copy to Clipboard"), systemImage: "doc.on.doc",
+                shortcut: "⌘↵"
+            ) {
                 core.clipboardCoordinator.copyToClipboard(item)
             },
             PopoverMenuItem(
-                title: "Paste and Keep Window Open", icon: .paste(target, fallback: "macwindow"),
+                title: String(localized: "Paste and Keep Window Open"),
+                icon: .paste(target, fallback: "macwindow"),
                 shortcut: "⌥↵"
             ) {
                 core.clipboardCoordinator.pasteKeepingWindowOpen(item)
@@ -145,30 +149,36 @@ enum ClipboardActionsMenu {
         ]
         if item.isPinned {
             items.append(
-                PopoverMenuItem(title: "Unpin Entry", systemImage: "pin.slash", shortcut: "⌘.") {
+                PopoverMenuItem(
+                    title: String(localized: "Unpin Entry"), systemImage: "pin.slash",
+                    shortcut: "⌘."
+                ) {
                     core.clipboardCoordinator.togglePinnedClip(item)
                 })
         } else {
             items.append(
-                PopoverMenuItem(title: "Pin Entry", systemImage: "pin", shortcut: "⌘.") {
+                PopoverMenuItem(
+                    title: String(localized: "Pin Entry"), systemImage: "pin", shortcut: "⌘."
+                ) {
                     core.clipboardCoordinator.togglePinnedClip(item)
                 })
         }
         if item.kind == .image {
             items.append(
-                PopoverMenuItem(title: "Show in Finder", systemImage: "folder") {
+                PopoverMenuItem(title: String(localized: "Show in Finder"), systemImage: "folder") {
                     core.clipboardCoordinator.revealClipboardImage(item)
                 })
         }
         items.append(
             PopoverMenuItem(
-                title: "Delete Entry", systemImage: "trash", shortcut: "⌃X", isDestructive: true
+                title: String(localized: "Delete Entry"), systemImage: "trash", shortcut: "⌃X",
+                isDestructive: true
             ) {
                 store.remove(item)
             })
         items.append(
             PopoverMenuItem(
-                title: "Delete All Entries", systemImage: "trash", shortcut: "⌃⇧X",
+                title: String(localized: "Delete All Entries"), systemImage: "trash", shortcut: "⌃⇧X",
                 isDestructive: true
             ) {
                 Task { await core.clipboardCoordinator.deleteAllClips() }
@@ -183,7 +193,7 @@ enum ClipboardActionsMenu {
             let oneLine = (item.text ?? "").split(whereSeparator: \.isWhitespace).joined(
                 separator: " ")
             return String(oneLine.prefix(40))
-        case .image: return "Image"
+        case .image: return String(localized: "Image")
         }
     }
 }

@@ -36,7 +36,10 @@ struct QuicklinkEditorSheet: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: Theme.Spacing.xl) {
-            Text(quicklink == nil ? "Add Quicklink" : "Edit Quicklink")
+            Text(
+                quicklink == nil
+                    ? String(localized: "Add Quicklink") : String(localized: "Edit Quicklink")
+            )
                 .font(.title2.weight(.bold))
 
             VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
@@ -66,11 +69,11 @@ struct QuicklinkEditorSheet: View {
 
             VStack(alignment: .leading, spacing: Theme.Spacing.lg) {
                 optionToggle(
-                    "Show in root search", isOn: $showsInRootSearch,
-                    detail: "List this quicklink alongside apps and commands.")
+                    String(localized: "Show in root search"), isOn: $showsInRootSearch,
+                    detail: String(localized: "List this quicklink alongside apps and commands."))
                 optionToggle(
-                    "Pin to top", isOn: $isPinned,
-                    detail: "Keep it above the other quicklinks.")
+                    String(localized: "Pin to top"), isOn: $isPinned,
+                    detail: String(localized: "Keep it above the other quicklinks."))
             }
 
             if let errorMessage {
@@ -146,7 +149,10 @@ struct QuicklinkEditorSheet: View {
             } label: {
                 HStack(spacing: Theme.Spacing.sm) {
                     SymbolImage(name: resolvedSymbol, size: 14)
-                    Text(iconSymbol == nil ? "Automatic" : "Custom")
+                    Text(
+                        iconSymbol == nil
+                            ? String(localized: "Automatic") : String(localized: "Custom")
+                    )
                         .lineLimit(1)
                     Spacer(minLength: 0)
                 }
@@ -180,7 +186,7 @@ struct QuicklinkEditorSheet: View {
                 .frame(width: 180)
             }
             .popover(isPresented: $showingAppPicker, arrowEdge: .bottom) {
-                AppPickerPopover(clearTitle: "Default app") { bundleID in
+                AppPickerPopover(clearTitle: String(localized: "Default app")) { bundleID in
                     openWithBundleID = bundleID
                     showingAppPicker = false
                 }

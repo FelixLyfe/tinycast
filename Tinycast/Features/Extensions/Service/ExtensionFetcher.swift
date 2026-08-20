@@ -21,7 +21,7 @@ final class ExtensionFetcher: Sendable {
 
         var errorDescription: String? {
             switch self {
-            case .badURL(let url): return "Invalid URL: \(url)"
+            case .badURL(let url): return String(localized: "Invalid URL: \(url)")
             }
         }
     }
@@ -72,9 +72,9 @@ enum ExtensionAsyncProcess {
         var errorDescription: String? {
             switch self {
             case .notFound(let command):
-                return "ENOENT: command not found: '\(command)'"
+                return String(localized: "ENOENT: command not found: '\(command)'")
             case .failedToStart(let command, let reason):
-                return "Could not run '\(command)': \(reason)"
+                return String(localized: "Could not run '\(command)': \(reason)")
             }
         }
     }

@@ -37,10 +37,17 @@ enum CalcFormatter {
         let magnitude = abs(feet)
         let wholeFeet = magnitude.rounded(.towardZero)
         let inches = (magnitude - wholeFeet) * 12
+        let feetValue = sign + display(wholeFeet)
         let feetPart =
-            wholeFeet == 0 ? "" : "\(sign)\(display(wholeFeet)) \(wholeFeet == 1 ? "foot" : "feet")"
+            wholeFeet == 0
+            ? ""
+            : wholeFeet == 1
+                ? String(localized: "\(feetValue) foot")
+                : String(localized: "\(feetValue) feet")
         let inchText = display(inches)
-        let inchPart = "\(inchText) \(inchText == "1" ? "inch" : "inches")"
+        let inchPart =
+            inchText == "1"
+            ? String(localized: "\(inchText) inch") : String(localized: "\(inchText) inches")
         if feetPart.isEmpty { return "\(sign)\(inchPart)" }
         return "\(feetPart) \(inchPart)"
     }

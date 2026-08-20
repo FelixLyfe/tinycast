@@ -49,9 +49,11 @@ final class ClipboardCoordinator {
     func deleteAllClips() async {
         guard
             await core.confirm(
-                title: "Clear clipboard history?",
-                message: "Every entry goes, pinned ones included. This can't be undone.",
-                symbol: PaletteMode.clipboard.systemImage, confirmTitle: "Clear History")
+                title: String(localized: "Clear clipboard history?"),
+                message: String(
+                    localized: "Every entry goes, pinned ones included. This can't be undone."),
+                symbol: PaletteMode.clipboard.systemImage,
+                confirmTitle: String(localized: "Clear History"))
         else { return }
         clipboardStore.clearAll()
     }

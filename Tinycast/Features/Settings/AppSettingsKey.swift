@@ -11,6 +11,7 @@ enum AppSettingsKey: String, CaseIterable {
     case emojiSkinTone = "emojiSkinTone"
     case popToRootTimeout = "popToRootTimeout"
     case appearance = "appearance"
+    case appLanguage = "appLanguage"
     case compactMode = "compactMode"
     case showFavoritesInCompactMode = "showFavoritesInCompactMode"
     case searchScopes = "launcherSearchScopes"

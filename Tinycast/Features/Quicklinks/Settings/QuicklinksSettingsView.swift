@@ -13,11 +13,13 @@ struct QuicklinksSettingsView: View {
         @Bindable var settings = settings
         return Form {
             FeatureSwitchSection(
-                header: "Quicklinks",
-                enableTitle: "Enable quicklinks",
+                header: String(localized: "Quicklinks"),
+                enableTitle: String(localized: "Enable quicklinks"),
                 enableSubtitle:
-                    "Open saved destinations from the launcher, a shortcut, or Search Quicklinks.",
-                launcherSubtitle: "Find your quicklinks in launcher search.",
+                    String(
+                        localized:
+                            "Open saved destinations from the launcher, a shortcut, or Search Quicklinks."),
+                launcherSubtitle: String(localized: "Find your quicklinks in launcher search."),
                 isEnabled: $settings.quicklinksEnabled,
                 showsInLauncher: $settings.quicklinksShowInLauncher)
 
@@ -52,8 +54,9 @@ struct QuicklinksSettingsView: View {
     private var storageNotice: some View {
         Section {
             Label(
-                "Quicklinks can't be saved: the database couldn't be opened, so nothing you change"
-                    + " here will stick. The existing file was left untouched.",
+                String(
+                    localized:
+                        "Quicklinks can't be saved: the database couldn't be opened, so nothing you change here will stick. The existing file was left untouched."),
                 systemImage: "exclamationmark.triangle.fill"
             )
             .foregroundStyle(.orange)
@@ -64,13 +67,13 @@ struct QuicklinksSettingsView: View {
     private var library: some View {
         Section {
             if !store.quicklinks.isEmpty {
-                SettingsFilterField(prompt: "Search quicklinks…", query: $query)
+                SettingsFilterField(prompt: String(localized: "Search quicklinks…"), query: $query)
             }
             if results.isEmpty {
                 Text(
                     store.quicklinks.isEmpty
-                        ? "Add one to make it searchable from the launcher."
-                        : "No quicklink matches “\(query)”."
+                        ? String(localized: "Add one to make it searchable from the launcher.")
+                        : String(localized: "No quicklink matches “\(query)”.")
                 )
                 .foregroundStyle(.secondary)
             } else {
@@ -94,9 +97,9 @@ struct QuicklinksSettingsView: View {
         return Section {
             Toggle(isOn: $settings.quicklinkOpensNewWindow) {
                 Text("Open in a new window")
-                Text(
-                    "Ask the handler for a new window instead of reusing its frontmost tab. "
-                        + "Only apps that accept a new-window argument can honour this.")
+                Text(String(
+                    localized:
+                        "Ask the handler for a new window instead of reusing its frontmost tab. Only apps that accept a new-window argument can honour this."))
             }
             Picker(selection: $settings.quicklinkSelectionFallback) {
                 ForEach(QuicklinkSelectionFallback.allCases) { option in
@@ -158,12 +161,12 @@ private struct QuicklinkSettingsRow: View {
             if quicklink.isPinned {
                 Image(systemName: "pin.fill")
                     .foregroundStyle(.secondary)
-                    .help("Pinned to the top")
+                    .help(String(localized: "Pinned to the top"))
             }
             if !quicklink.showsInRootSearch {
                 Image(systemName: "eye.slash")
                     .foregroundStyle(.secondary)
-                    .help("Hidden from root search")
+                    .help(String(localized: "Hidden from root search"))
             }
 
             ShortcutRecorder(action: .quicklink(id: quicklink.id))
@@ -172,16 +175,16 @@ private struct QuicklinkSettingsRow: View {
                 Image(systemName: "pencil")
             }
             .buttonStyle(.plain)
-            .help("Edit Quicklink")
-            .accessibilityLabel("Edit \(quicklink.name)")
+            .help(String(localized: "Edit Quicklink"))
+            .accessibilityLabel(String(localized: "Edit \(quicklink.name)"))
 
             Button(action: onDelete) {
                 Image(systemName: "trash")
                     .foregroundStyle(.red)
             }
             .buttonStyle(.plain)
-            .help("Delete Quicklink")
-            .accessibilityLabel("Delete \(quicklink.name)")
+            .help(String(localized: "Delete Quicklink"))
+            .accessibilityLabel(String(localized: "Delete \(quicklink.name)"))
         }
     }
 

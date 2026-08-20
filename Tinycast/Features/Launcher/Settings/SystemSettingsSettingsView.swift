@@ -6,8 +6,8 @@ struct SystemSettingsSettingsView: View {
         Form {
             LauncherItemsSection(
                 kind: .systemSettings,
-                header: "System Settings",
-                searchPrompt: "Search System Settings…")
+                header: String(localized: "System Settings"),
+                searchPrompt: String(localized: "Search System Settings…"))
         }
         .formStyle(.grouped)
         .releasesFocusOnOutsideClick()

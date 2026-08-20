@@ -43,7 +43,8 @@ private struct SearchFilesCommandSection: View {
                     Toggle("", isOn: visibilityBinding(entry))
                         .labelsHidden()
                         .toggleStyle(.checkbox)
-                        .accessibilityLabel("Show \(entry.name) in launcher")
+                        .accessibilityLabel(
+                            String(localized: "Show \(entry.name) in launcher"))
                 }
             }
         } header: {
@@ -117,8 +118,8 @@ private struct FileSearchScopesSection: View {
         panel.canChooseDirectories = true
         panel.canChooseFiles = false
         panel.allowsMultipleSelection = true
-        panel.prompt = "Add"
-        panel.message = "Choose folders to include when searching for files."
+        panel.prompt = String(localized: "Add")
+        panel.message = String(localized: "Choose folders to include when searching for files.")
         // Tinycast is an accessory app, so the panel opens behind the frontmost app without this.
         NSApp.activate(ignoringOtherApps: true)
         guard panel.runModal() == .OK else { return }
@@ -138,14 +139,14 @@ private struct ScopeRow: View {
                 if isMissing {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .foregroundStyle(.orange)
-                        .help("This location no longer exists.")
+                        .help(String(localized: "This location no longer exists."))
                 }
                 Button(action: onRemove) {
                     Image(systemName: "xmark.circle.fill")
                         .foregroundStyle(.tertiary)
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel("Remove \(scope)")
+                .accessibilityLabel(String(localized: "Remove \(scope)"))
             }
         } label: {
             Label {
@@ -216,7 +217,7 @@ private struct PatternRow: View {
                         .foregroundStyle(.tertiary)
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel("Remove \(pattern)")
+                .accessibilityLabel(String(localized: "Remove \(pattern)"))
             }
         } label: {
             Text(pattern)

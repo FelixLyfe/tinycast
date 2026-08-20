@@ -62,9 +62,12 @@ struct ShortcutRecorderPopover: View {
         }
         let held = KeyShortcut.collapsedModifierSymbols(
             from: capture.heldModifiers, hyperChord: KeyShortcut.displayedHyperChord())
-        guard held.isEmpty else { return State(caps: held, label: "Add a key") }
+        guard held.isEmpty else {
+            return State(caps: held, label: String(localized: "Add a key"))
+        }
         return State(
-            caps: [DoubleTapModifier.option.glyph, "A"], label: "Type a shortcut", isExample: true)
+            caps: [DoubleTapModifier.option.glyph, "A"],
+            label: String(localized: "Type a shortcut"), isExample: true)
     }
 }
 

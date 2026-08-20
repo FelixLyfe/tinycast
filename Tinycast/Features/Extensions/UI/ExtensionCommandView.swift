@@ -21,11 +21,11 @@ struct ExtensionCommandView: View {
     private var content: some View {
         switch state {
         case .launching where screen.root == nil:
-            EmptyResults(text: "Starting…")
+            EmptyResults(text: String(localized: "Starting…"))
         case .failed(let message):
             ExtensionFailureView(message: message)
         case .finished:
-            EmptyResults(text: "Done")
+            EmptyResults(text: String(localized: "Done"))
         default:
             switch screen.kind {
             case .list, .grid:
@@ -47,11 +47,13 @@ struct ExtensionCommandView: View {
                     // A commit arrived but the command rendered nothing — it returned null, usually
                     // because it has no data to show. Saying "Starting…" here would claim it is still
                     // launching, which is how a permanently-null command looked like a hang.
-                    EmptyResults(text: "Nothing to show")
+                    EmptyResults(text: String(localized: "Nothing to show"))
                 } else {
                     ExtensionFailureView(
-                        message:
-                            "This command renders \(type), which Tinycast doesn't support yet. See docs/extensions.md."
+                        message: String(
+                            localized:
+                                "This command renders \(type), which Tinycast doesn't support yet. See docs/extensions.md."
+                        )
                     )
                 }
             }

@@ -72,7 +72,11 @@ struct NoteSwitcherView: View {
                     size: Theme.Size.noteGlyph
                 )
                 .foregroundStyle(Theme.Colors.textSecondary)
-                Text(notes.isSearching ? "Searching notes…" : "No notes found")
+                Text(
+                    notes.isSearching
+                        ? String(localized: "Searching notes…")
+                        : String(localized: "No notes found")
+                )
                     .foregroundStyle(Theme.Colors.textSecondary)
             }
             .frame(maxWidth: .infinity)
@@ -167,8 +171,12 @@ private struct NoteSwitcherRow: View {
             }
             Spacer(minLength: Theme.Spacing.md)
             if !editing, selected || hovered {
-                rowButton(title: "Rename \(summary.title)", symbol: "pencil", action: onBeginRename)
-                rowButton(title: "Move \(summary.title) to Trash", symbol: "trash", action: onTrash)
+                rowButton(
+                    title: String(localized: "Rename \(summary.title)"), symbol: "pencil",
+                    action: onBeginRename)
+                rowButton(
+                    title: String(localized: "Move \(summary.title) to Trash"), symbol: "trash",
+                    action: onTrash)
                     .foregroundStyle(Theme.Colors.destructive)
             }
         }
@@ -191,11 +199,11 @@ private struct NoteSwitcherRow: View {
             guard !editing else { return }
             onActivate()
         }
-        .accessibilityAction(named: "Rename \(summary.title)") {
+        .accessibilityAction(named: String(localized: "Rename \(summary.title)")) {
             guard !editing else { return }
             onBeginRename()
         }
-        .accessibilityAction(named: "Move \(summary.title) to Trash") {
+        .accessibilityAction(named: String(localized: "Move \(summary.title) to Trash")) {
             guard !editing else { return }
             onTrash()
         }

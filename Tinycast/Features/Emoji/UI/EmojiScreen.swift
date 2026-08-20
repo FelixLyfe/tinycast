@@ -69,9 +69,9 @@ struct EmojiScreen: PaletteScreen {
     private func content(selection: Int, scroll: ScrollIntent) -> some View {
         let sections = sections
         if !index.isLoaded {
-            EmptyResults(text: "Loading emoji…")
+            EmptyResults(text: String(localized: "Loading emoji…"))
         } else if sections.isEmpty {
-            EmptyResults(text: "No emoji found")
+            EmptyResults(text: String(localized: "No emoji found"))
         } else {
             EmojiGridView(
                 sections: sections,
@@ -101,18 +101,19 @@ enum EmojiActionsMenu {
             header: entry.displayName,
             items: [
                 PopoverMenuItem(
-                    title: target?.pasteTitle ?? "Paste",
+                    title: target?.pasteTitle ?? String(localized: "Paste"),
                     icon: .paste(target, fallback: "doc.on.clipboard"), shortcut: "↵"
                 ) {
                     core.emojiCoordinator.pasteEmoji(entry)
                 },
                 PopoverMenuItem(
-                    title: "Copy to Clipboard", systemImage: "doc.on.doc", shortcut: "⌘↵"
+                    title: String(localized: "Copy to Clipboard"), systemImage: "doc.on.doc",
+                    shortcut: "⌘↵"
                 ) {
                     core.emojiCoordinator.copyEmoji(entry)
                 },
                 PopoverMenuItem(
-                    title: "Paste and Keep Window Open",
+                    title: String(localized: "Paste and Keep Window Open"),
                     icon: .paste(target, fallback: "macwindow"), shortcut: "⌥↵"
                 ) {
                     core.emojiCoordinator.pasteEmojiKeepingWindowOpen(entry)

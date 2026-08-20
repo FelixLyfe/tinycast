@@ -88,11 +88,13 @@ struct ExtensionAlert: Sendable {
     var isDestructive: Bool
 
     init(payload: [String: RenderValue]) {
-        title = payload["title"]?.stringValue ?? "Are you sure?"
+        title = payload["title"]?.stringValue ?? String(localized: "Are you sure?")
         message = payload["message"]?.stringValue
         let primary = payload["primaryAction"]?.objectValue
-        primaryTitle = primary?["title"]?.stringValue ?? "Confirm"
-        dismissTitle = payload["dismissAction"]?.objectValue?["title"]?.stringValue ?? "Cancel"
+        primaryTitle = primary?["title"]?.stringValue ?? String(localized: "Confirm")
+        dismissTitle =
+            payload["dismissAction"]?.objectValue?["title"]?.stringValue
+            ?? String(localized: "Cancel")
         isDestructive = primary?["style"]?.stringValue == "destructive"
     }
 }
@@ -104,9 +106,11 @@ enum ExtensionHostError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .noActiveExtension: return "No extension command is running."
-        case .unknown(let what): return "Unknown host call '\(what)'."
-        case .unsupported(let what): return "\(what) is not supported in Tinycast extensions."
+        case .noActiveExtension:
+            return String(localized: "No extension command is running.")
+        case .unknown(let what): return String(localized: "Unknown host call '\(what)'.")
+        case .unsupported(let what):
+            return String(localized: "\(what) is not supported in Tinycast extensions.")
         }
     }
 }

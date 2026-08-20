@@ -16,19 +16,22 @@ struct GeneralSettingsView: View {
     /// The missing-permission half is its own row, so it can carry the button that fixes it.
     private var hyperSubtitle: String {
         guard settings.hyperKey != .none else {
-            return
-                "Select a physical key to remap to the \(hyperGlyphs) modifier keys simultaneously."
+            return String(
+                localized:
+                    "Select a physical key to remap to the \(hyperGlyphs) modifier keys simultaneously."
+            )
         }
-        return
-            "Pressing \(settings.hyperKey.title) will trigger the left \(hyperGlyphs) modifier keys."
-            + " Hyper Key shortcuts are shown in Tinycast with ✦."
+        return String(
+            localized:
+                "Pressing \(settings.hyperKey.title) will trigger the left \(hyperGlyphs) modifier keys. Hyper Key shortcuts are shown in Tinycast with ✦."
+        )
     }
 
     var body: some View {
         @Bindable var settings = settings
         return Form {
             Section {
-                SettingsRow(title: "App Launcher") {
+                SettingsRow(title: String(localized: "App Launcher")) {
                     ShortcutRecorder(action: .togglePalette)
                 }
             } header: {
@@ -145,6 +148,14 @@ struct GeneralSettingsView: View {
             }
 
             Section {
+                Picker(selection: $settings.appLanguage) {
+                    ForEach(AppLanguage.allCases) { language in
+                        Text(verbatim: language.title).tag(language)
+                    }
+                } label: {
+                    Text("Language")
+                    Text("Quit and reopen Tinycast to apply a language change.")
+                }
                 Toggle(isOn: $settings.launchAtLogin) {
                     Text("Launch at login")
                     Text("Start Tinycast automatically when you log in.")

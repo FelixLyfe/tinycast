@@ -11,7 +11,7 @@ struct ClipboardSettingsView: View {
         @Bindable var settings = settings
         return Form {
             Section {
-                SettingsRow(title: "Clipboard History") {
+                SettingsRow(title: String(localized: "Clipboard History")) {
                     ShortcutRecorder(action: .toggleClipboard)
                 }
             } header: {

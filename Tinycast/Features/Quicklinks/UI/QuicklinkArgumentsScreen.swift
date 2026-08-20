@@ -17,7 +17,9 @@ struct QuicklinkArgumentsScreen: PaletteScreen {
         options.enumerated().map { Choice(id: $0.offset, title: $0.element) }
     }
 
-    var primaryActionTitle: String { session.isLastArgument ? "Open Quicklink" : "Next" }
+    var primaryActionTitle: String {
+        session.isLastArgument ? String(localized: "Open Quicklink") : String(localized: "Next")
+    }
 
     /// Filtered like every other list; a free-text argument has none, so selection stays at zero.
     private var options: [String] {

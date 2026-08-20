@@ -16,15 +16,15 @@ enum PaletteMode: String, CaseIterable, Identifiable {
     var id: String { rawValue }
     var title: String {
         switch self {
-        case .launcher: return "Apps"
-        case .clipboard: return "Clipboard"
-        case .calculatorHistory: return "Calculator History"
-        case .emoji: return "Emoji & Symbols"
-        case .fileSearch: return "Search Files"
-        case .uninstall: return "Uninstall Application"
-        case .quicklinks: return "Quicklinks"
-        case .quicklinkArguments: return "Open Quicklink"
-        case .extensionCommand: return "Extension"
+        case .launcher: return String(localized: "Apps")
+        case .clipboard: return String(localized: "Clipboard")
+        case .calculatorHistory: return String(localized: "Calculator History")
+        case .emoji: return String(localized: "Emoji & Symbols")
+        case .fileSearch: return String(localized: "Search Files")
+        case .uninstall: return String(localized: "Uninstall Application")
+        case .quicklinks: return String(localized: "Quicklinks")
+        case .quicklinkArguments: return String(localized: "Open Quicklink")
+        case .extensionCommand: return String(localized: "Extension")
         }
     }
     var systemImage: String {
@@ -41,17 +41,18 @@ enum PaletteMode: String, CaseIterable, Identifiable {
     }
     var placeholder: String {
         switch self {
-        case .launcher: return "Search for apps and commands…"
-        case .clipboard: return "Type to filter entries…"
-        case .calculatorHistory: return "Do math, convert units, or search your past calculations…"
-        case .emoji: return "Search emoji and symbols…"
-        case .fileSearch: return "Search files and folders…"
-        case .uninstall: return "Filter files and folders by name…"
-        case .quicklinks: return "Search quicklinks…"
+        case .launcher: return String(localized: "Search for apps and commands…")
+        case .clipboard: return String(localized: "Type to filter entries…")
+        case .calculatorHistory:
+            return String(localized: "Do math, convert units, or search your past calculations…")
+        case .emoji: return String(localized: "Search emoji and symbols…")
+        case .fileSearch: return String(localized: "Search files and folders…")
+        case .uninstall: return String(localized: "Filter files and folders by name…")
+        case .quicklinks: return String(localized: "Search quicklinks…")
         // Replaced by the pending argument's name; only reached if the session vanished mid-render.
-        case .quicklinkArguments: return "Enter a value…"
+        case .quicklinkArguments: return String(localized: "Enter a value…")
         // Replaced by the command's own `searchBarPlaceholder` whenever it declares one.
-        case .extensionCommand: return "Search…"
+        case .extensionCommand: return String(localized: "Search…")
         }
     }
 }
@@ -68,5 +69,5 @@ struct PasteTarget: Equatable {
         iconPath = app.bundleURL?.path
     }
 
-    var pasteTitle: String { "Paste to \(name)" }
+    var pasteTitle: String { String(localized: "Paste to \(name)") }
 }

@@ -1,0 +1,3 @@
+"CFBundleName" = "Tinycast";
+"NSAppleEventsUsageDescription" = "Tinycast 仅在你主动运行系统操作时使用“自动化”权限。";
+"NSBluetoothAlwaysUsageDescription" = "Tinycast 仅在你运行“切换蓝牙”操作时使用蓝牙权限。";

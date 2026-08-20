@@ -41,7 +41,8 @@ enum BackupActions {
             try SettingsBackup.gather(from: core).encoded().write(to: url, options: .atomic)
         } catch {
             await present(
-                core: core, title: "Export Failed", message: error.localizedDescription,
+                core: core, title: String(localized: "Export Failed"),
+                message: error.localizedDescription,
                 symbol: "square.and.arrow.up")
         }
     }
@@ -57,12 +58,13 @@ enum BackupActions {
                     core: core, commands: commandCount, shortcuts: shortcutCount)
             else { return }
             await present(
-                core: core, title: "Settings Imported",
+                core: core, title: String(localized: "Settings Imported"),
                 message: summaryText(backup.apply(to: core)),
                 symbol: importSymbol, tone: .success)
         } catch {
             await present(
-                core: core, title: "Import Failed", message: error.localizedDescription,
+                core: core, title: String(localized: "Import Failed"),
+                message: error.localizedDescription,
                 symbol: importSymbol)
         }
     }
@@ -141,20 +143,24 @@ enum BackupActions {
         appliedText(s) ?? nothingImportedText
     }
 
-    static let nothingImportedText = "Nothing to import from this file."
+    static let nothingImportedText = String(localized: "Nothing to import from this file.")
 
     /// nil when no settings applied, so a caller can compose one combined sentence.
     static func appliedText(_ s: SettingsBackup.ApplySummary) -> String? {
         var parts: [String] = []
-        if s.settingsFields > 0 { parts.append("\(s.settingsFields) settings") }
-        if s.hotkeys > 0 { parts.append("\(s.hotkeys) shortcuts") }
-        if s.favorites > 0 { parts.append("\(s.favorites) favorites") }
-        if s.hiddenItems > 0 { parts.append("\(s.hiddenItems) hidden items") }
-        if s.aliases > 0 { parts.append("\(s.aliases) aliases") }
-        if s.customCommands > 0 { parts.append("\(s.customCommands) custom commands") }
-        if s.quicklinks > 0 { parts.append("\(s.quicklinks) quicklinks") }
+        if s.settingsFields > 0 {
+            parts.append(String(localized: "\(s.settingsFields) settings"))
+        }
+        if s.hotkeys > 0 { parts.append(String(localized: "\(s.hotkeys) shortcuts")) }
+        if s.favorites > 0 { parts.append(String(localized: "\(s.favorites) favorites")) }
+        if s.hiddenItems > 0 { parts.append(String(localized: "\(s.hiddenItems) hidden items")) }
+        if s.aliases > 0 { parts.append(String(localized: "\(s.aliases) aliases")) }
+        if s.customCommands > 0 {
+            parts.append(String(localized: "\(s.customCommands) custom commands"))
+        }
+        if s.quicklinks > 0 { parts.append(String(localized: "\(s.quicklinks) quicklinks")) }
         guard !parts.isEmpty else { return nil }
-        return "Applied " + parts.joined(separator: ", ") + "."
+        return String(localized: "Applied \(parts.joined(separator: ", ")).")
     }
 
     private static func confirmExecutableImport(
@@ -163,16 +169,23 @@ enum BackupActions {
         -> Bool
     {
         guard commands > 0 || shortcuts > 0 else { return true }
-        let commandText = commands == 1 ? "1 custom command" : "\(commands) custom commands"
+        let commandText =
+            commands == 1
+            ? String(localized: "1 custom command")
+            : String(localized: "\(commands) custom commands")
         let shortcutText =
-            shortcuts == 1 ? "1 global shortcut" : "\(shortcuts) global shortcuts"
+            shortcuts == 1
+            ? String(localized: "1 global shortcut")
+            : String(localized: "\(shortcuts) global shortcuts")
         // Red glyph for a real warning, plain button: importing destroys nothing.
         return await core.confirm(
-            title: "Import executable commands?",
-            message:
-                "This backup contains \(commandText) and \(shortcutText). Custom commands can run "
-                + "arbitrary shell code. Only import files you trust.",
-            symbol: importSymbol, confirmTitle: "Import", confirmRole: .standard)
+            title: String(localized: "Import executable commands?"),
+            message: String(
+                localized:
+                    "This backup contains \(commandText) and \(shortcutText). Custom commands can run arbitrary shell code. Only import files you trust."
+            ),
+            symbol: importSymbol, confirmTitle: String(localized: "Import"),
+            confirmRole: .standard)
     }
 
     private static func dateStamp() -> String {

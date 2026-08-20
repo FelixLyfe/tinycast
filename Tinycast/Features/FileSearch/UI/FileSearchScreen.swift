@@ -9,8 +9,9 @@ struct FileSearchScreen: PaletteScreen {
     var rows: [FileSearchResult] { session.results }
 
     var primaryActionTitle: String {
-        guard let result = result(at: vm.selection) else { return "Open File" }
-        return result.isDirectory ? "Open Folder" : "Open File"
+        guard let result = result(at: vm.selection) else { return String(localized: "Open File") }
+        return result.isDirectory
+            ? String(localized: "Open Folder") : String(localized: "Open File")
     }
 
     private func result(at selection: Int) -> FileSearchResult? {
@@ -41,11 +42,14 @@ struct FileSearchScreen: PaletteScreen {
     private func content(selection: Int, scroll: ScrollIntent) -> some View {
         let query = vm.query.trimmingCharacters(in: .whitespacesAndNewlines)
         if query.isEmpty {
-            EmptyResults(text: "Type to search files and folders")
+            EmptyResults(text: String(localized: "Type to search files and folders"))
         } else if session.state == .failed {
-            EmptyResults(text: "File search is unavailable")
+            EmptyResults(text: String(localized: "File search is unavailable"))
         } else if rows.isEmpty {
-            EmptyResults(text: session.state == .ready ? "No files found" : "Searching files…")
+            EmptyResults(
+                text: session.state == .ready
+                    ? String(localized: "No files found")
+                    : String(localized: "Searching files…"))
         } else {
             FileSearchList(
                 results: rows,
@@ -67,14 +71,16 @@ enum FileSearchActionsMenu {
             header: result.name,
             items: [
                 PopoverMenuItem(
-                    title: result.isDirectory ? "Open Folder" : "Open File",
+                    title: result.isDirectory
+                        ? String(localized: "Open Folder") : String(localized: "Open File"),
                     systemImage: result.isDirectory ? "folder" : "doc", shortcut: "↵"
                 ) { core.fileSearchCoordinator.open(result) },
                 PopoverMenuItem(
-                    title: "Show in Finder", systemImage: "folder", shortcut: "⌘↵"
+                    title: String(localized: "Show in Finder"), systemImage: "folder",
+                    shortcut: "⌘↵"
                 ) { core.fileSearchCoordinator.showInFinder(result) },
                 PopoverMenuItem(
-                    title: "Copy Path", systemImage: "doc.on.clipboard"
+                    title: String(localized: "Copy Path"), systemImage: "doc.on.clipboard"
                 ) { core.fileSearchCoordinator.copyPath(result) }
             ])
     }

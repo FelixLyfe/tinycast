@@ -53,6 +53,32 @@ struct SettingsBackupTest {
             "user ignore patterns ride the settings backup",
             mirrored["fileSearchIgnorePatterns"] == .fileSearchIgnorePatterns)
         check("notes enablement rides the settings backup", mirrored["notesEnabled"] == .notesEnabled)
+        check("app language rides the settings backup", mirrored["appLanguage"] == .appLanguage)
+
+        let suiteName = "com.tinycast.tests.app-language.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suiteName)!
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        check(
+            "app language defaults to the bundle's preferred localization",
+            AppLanguage.saved(in: defaults) == AppLanguage.systemPreferred)
+        defaults.set(
+            AppLanguage.simplifiedChinese.rawValue,
+            forKey: AppSettingsKey.appLanguage.rawValue)
+        check(
+            "app language restores Simplified Chinese",
+            AppLanguage.saved(in: defaults) == .simplifiedChinese)
+        AppLanguage.prepareForLaunch(in: defaults)
+        check(
+            "launch preparation selects Simplified Chinese",
+            defaults.stringArray(forKey: "AppleLanguages")?.first == "zh-Hans")
+        AppLanguage.english.prepareForNextLaunch(in: defaults)
+        check(
+            "next-launch preparation selects English",
+            defaults.stringArray(forKey: "AppleLanguages")?.first == "en")
+        check(
+            "language names remain self-readable",
+            AppLanguage.english.title == "English"
+                && AppLanguage.simplifiedChinese.title == "简体中文")
 
         // A reason that only echoes the key name explains nothing, so it fails like a missing one.
         let emptyReasons = excluded.filter { key, reason in
