@@ -242,7 +242,8 @@ struct ClipboardTests {
         }
     }
 
-    /// A shipped pre-pin database migrates in place. Failing to open one is not a soft failure: the store deletes and recreates a database it can't open, taking the history with it.
+    /// A shipped pre-pin database migrates in place. Failing to open one is not a soft failure:
+    /// the store recreates a database it cannot open, taking the history with it.
     static func migrationFromShippedDatabase() {
         let dir = scratchDirectory()
         defer { try? FileManager.default.removeItem(at: dir) }
@@ -282,7 +283,7 @@ struct ClipboardTests {
     static func scratchDirectory() -> URL {
         let dir = FileManager.default.temporaryDirectory
             .appendingPathComponent(
-                "tinycast-clipboard-test-\(UUID().uuidString)", isDirectory: true)
+                "cliiippo-clipboard-test-\(UUID().uuidString)", isDirectory: true)
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         return dir
     }
@@ -314,7 +315,7 @@ struct ClipboardTests {
             """)
     }
 
-    /// Rows returned by the `sqlite3` CLI — used to write a legacy database and to read the schema back, neither of which the store exposes.
+    /// Rows returned by the `sqlite3` CLI, used to write a legacy database and read its schema.
     @discardableResult
     static func sqlite(_ database: URL, _ sql: String) -> Set<String> {
         let task = Process()
@@ -329,7 +330,8 @@ struct ClipboardTests {
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         task.waitUntilExit()
         if task.terminationStatus != 0 { fail("sqlite3 failed: \(sql.prefix(60))") }
-        return Set(String(decoding: data, as: UTF8.self).split(separator: "\n").map(String.init))
+        let output = String(bytes: data, encoding: .utf8) ?? ""
+        return Set(output.split(separator: "\n").map(String.init))
     }
 
     static func form(_ text: String) -> ClipboardItem.TextForm? {
